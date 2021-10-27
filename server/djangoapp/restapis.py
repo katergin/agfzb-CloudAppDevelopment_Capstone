@@ -12,30 +12,34 @@ from ibm_watson.natural_language_understanding_v1 import Features, SentimentOpti
 #                                     auth=HTTPBasicAuth('apikey', api_key))
 def get_request(url, **kwargs):
     try:
-        if api_key:
-            # Call get method of requests library with URL and parameters
-            authenticator = IAMAuthenticator(kwargs['api_key'])
+        if 'api_key' in kwargs:
+            authenticator = IAMAuthenticator(kwargs["api_key"])
             natural_language_understanding = NaturalLanguageUnderstandingV1(
-                version=kwargs['version'],
-                authenticator=authenticator)
+                version=kwargs["version"],
+                authenticator=authenticator
+            )
             natural_language_understanding.set_service_url(url)
             response = natural_language_understanding.analyze(
-                text=kwargs['text'],
-                features=kwargs['features']
+                text=kwargs["text"],
+                features=Features(
+                    entities=EntitiesOptions(emotion=True, sentiment=True, limit=2),
+                    keywords=KeywordsOptions(emotion=True, sentiment=True, limit=2)
+                ),
+                language="en"
             ).get_result()
-            json_data = response
+            json_data = json.dumps(response, indent=2)
         else:
             response = requests.get(
-                headers={'Content-Type': 'application/json'}, 
                 url=url,
-                params=kwargs
+                params=kwargs, 
+                headers={'Content-Type': 'application/json'}
             )
             json_data = json.loads(response.text)
-    except:
+    except Exception as e:
         # If any error occurs
         print("Network exception occurred")
-    status_code = response.status_code
-    print(f"With status {status_code}")
+        print(f"Exception: {e}")
+    # status_code = response.status_code
     return json_data
 
 # Create a `post_request` to make HTTP POST requests
@@ -133,15 +137,19 @@ def get_dealer_reviews_from_cf(url, dealerId):
 def analyze_review_sentiments(text):
 
     # - Call get_request() with specified arguments
+    url = "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/f646a96c-5571-4cc2-9db0-a7b0f2917804/"
+    api_key = "6iGRq0XAZZTdWIKO2HOENAj-t_7vLlhmhXUjXubi1dIG"
+    version = "2021-03-25"
+    features = ["sentiment"]
+    language = "en"
+    return_analyzed_text = False
     result = get_request(
-        url="https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/f646a96c-5571-4cc2-9db0-a7b0f2917804",
-        api_key='6iGRq0XAZZTdWIKO2HOENAj-t_7vLlhmhXUjXubi1dIG',
-        version='2021-03-25',
-        text=text,
-        features=Features(
-            entities=EntitiesOptions(emotion=True, sentiment=True, limit=2),
-            keywords=KeywordsOptions(emotion=True, sentiment=True, limit=2)
-        ),
+        url=url,
+        api_key=api_key,
+        text=text, 
+        version=version,
+        features=features,
+        language=language,
         return_analyzed_text=return_analyzed_text
     )
     # - Get the returned sentiment label such as Positive or Negative
