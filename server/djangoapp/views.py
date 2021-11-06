@@ -92,6 +92,32 @@ def get_dealer_details(request, dealer_id):
         return render(request, 'djangoapp/dealer_details.html', context)
 
 # Create a `add_review` view to submit a review
-# def add_review(request, dealer_id):
-# ...
-
+def add_review(request, dealer_id):
+    if request.method == "GET":
+        context = {
+            "cars": models.CarModel.objects.all().filter(dealerId = dealer_id),
+            "dealerId": dealer_id
+        }
+        return render(request, 'djangoapp/add_review.html', context)
+    if request.method == "POST":
+        if request.user.is_authenticated:
+            form = request.POST
+            review = {
+                "name": request.user.username,                
+                "dealership": int(dealer_id),
+                "review": form["content"],
+                "purchase": form.get("purchasecheck"),
+                }
+            if form.get("purchasecheck"):
+                review["purchase_date"] = datetime.strptime(form.get("purchasedate"), "%m/%d/%Y").isoformat()
+                car = models.CarModel.objects.get(pk=form["car"])
+                review["car_make"] = car.make
+                review["car_model"] = car.name
+                review["car_year"]= int(car.year.strftime("%Y"))
+                review["car_body_type"] = car.body_type
+            json_payload = {"review": review}
+            url = "https://4fbfebf7.us-south.apigw.appdomain.cloud/api/review"
+            restapis.post_request(url, json_payload)
+            return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
+        else:
+            return redirect("/djangoapp/login")
