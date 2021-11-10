@@ -39,13 +39,20 @@ def get_request(url, **kwargs):
         # If any error occurs
         print("Network exception occurred")
         print(f"Exception: {e}")
-    # status_code = response.status_code
     return json_data
 
+
 # Create a `post_request` to make HTTP POST requests
-# e.g., response = requests.post(url, params=kwargs, json=payload)
+def post_request(url, json_payload, **kwargs):
+    try:
+        # Call get method of requests library with URL and parameters
+        response = requests.post(url, params=kwargs, json=json_payload)
+    except Exception as e:
+        # If any error occurs
+        print("Network exception occurred")
+        print(f"Exception: {e}")
 
-
+        
 # Create a get_dealers_from_cf method to get dealers from a cloud function
 # def get_dealers_from_cf(url, **kwargs):
 def get_dealers_from_cf(url, **kwargs):
@@ -97,10 +104,10 @@ def get_dealer_by_state(url, state):
 # from a cloud function
 def get_dealer_reviews_from_cf(url, dealerId):
     results = []
-    # - Call get_request() with specified arguments
+    # Call get_request() with specified arguments
     json_result = get_request(url, dealerId=dealerId)
     if json_result:
-        # - Parse JSON results into a DealerView object list
+        # Parse JSON results into a DealerView object list
         reviews = json_result['reviews']
         for review in reviews:
             try:
@@ -129,20 +136,18 @@ def get_dealer_reviews_from_cf(url, dealerId):
                     sentiment= "none")
             review_obj.sentiment = analyze_review_sentiments(review_obj.review)                  
             results.append(review_obj)
-    print(results)
     return results
 
 
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
 def analyze_review_sentiments(text):
-
-    # - Call get_request() with specified arguments
     url = "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/f646a96c-5571-4cc2-9db0-a7b0f2917804/"
     api_key = "6iGRq0XAZZTdWIKO2HOENAj-t_7vLlhmhXUjXubi1dIG"
     version = "2021-03-25"
     features = ["sentiment"]
     language = "en"
     return_analyzed_text = False
+    # Call get_request() with specified arguments
     result = get_request(
         url=url,
         api_key=api_key,
@@ -152,5 +157,5 @@ def analyze_review_sentiments(text):
         language=language,
         return_analyzed_text=return_analyzed_text
     )
-    # - Get the returned sentiment label such as Positive or Negative
+    # Get the returned sentiment label such as Positive or Negative
     return result
