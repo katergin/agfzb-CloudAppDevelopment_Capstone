@@ -102,18 +102,6 @@ def add_review(request, dealer_id):
     if request.method == "POST":
         if request.user.is_authenticated:
             form = request.POST
-            """
-            self.id = id
-            self.dealership = dealership
-            self.purchase = purchase
-            self.purchase_date = purchase_date
-            self.car_make = car_make
-            self.car_model = car_model
-            self.car_year = car_year
-            self.name = name
-            self.review = review
-            self.sentiment = sentiment
-            """
             review = {                
                 "dealership": int(dealer_id),
                 "name": request.user.username,
