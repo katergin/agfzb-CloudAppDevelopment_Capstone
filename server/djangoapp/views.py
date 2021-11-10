@@ -102,9 +102,21 @@ def add_review(request, dealer_id):
     if request.method == "POST":
         if request.user.is_authenticated:
             form = request.POST
-            review = {
-                "name": request.user.username,                
+            """
+            self.id = id
+            self.dealership = dealership
+            self.purchase = purchase
+            self.purchase_date = purchase_date
+            self.car_make = car_make
+            self.car_model = car_model
+            self.car_year = car_year
+            self.name = name
+            self.review = review
+            self.sentiment = sentiment
+            """
+            review = {                
                 "dealership": int(dealer_id),
+                "name": request.user.username,
                 "review": form["content"],
                 "purchase": form.get("purchasecheck"),
                 }
@@ -117,7 +129,7 @@ def add_review(request, dealer_id):
                 review["car_body_type"] = car.body_type
             json_payload = {"review": review}
             url = "https://4fbfebf7.us-south.apigw.appdomain.cloud/api/review"
-            restapis.post_request(url, json_payload)
+            restapis.post_request(url, json_payload, dealer_id)
             return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
         else:
             return redirect("/djangoapp/login")
