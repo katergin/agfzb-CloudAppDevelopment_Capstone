@@ -9,7 +9,7 @@ class CarMake(models.Model):
     description = models.TextField(null=False)
 
     def __str__(self):
-        return self.name
+        return f"{self.name}"
 
 
 class CarModel(models.Model):
@@ -27,7 +27,7 @@ class CarModel(models.Model):
     year = models.DateField(null=False)
 
     def __str__(self):
-        return self.make + self.name + self.year
+        return f"{self.make} {self.name} {str(self.year)}"
 
 
 # <HINT> Create a plain Python class `CarDealer` to hold dealer data
