@@ -36,9 +36,9 @@ def login_request(request):
             return redirect('djangoapp:index')
         else:
             context['message'] = "Invalid username or password."
-            return render(request, 'djangoapp:index', context)
+            return render(request, 'djangoapp/index.html', context)
     else:
-        return render(request, 'djangoapp:index', context)
+        return render(request, 'djangoapp/index.html', context)
 
 # Create a `logout_request` view to handle sign out request
 def logout_request(request):
@@ -102,21 +102,21 @@ def add_review(request, dealer_id):
     if request.method == "POST":
         if request.user.is_authenticated:
             form = request.POST
-            review = {                
-                "dealership": int(dealer_id),
-                "name": request.user.username,
-                "review": form["review"],
-                "purchase": form.get("purchasecheck") == 'on',
-                }
+            payload = dict()
+            payload["dealership"] = int(dealer_id)
+            payload["name"] = request.user.username
+            payload["review"] = form["review"]
+            payload["purchase"] = form.get("purchasecheck") == "on"
             if form.get("purchasecheck"):
-                review["purchase_date"] = datetime.strptime(form.get("purchasedate"), "%m/%d/%Y").isoformat()
                 car = CarModel.objects.get(pk=form["car"])
-                review["car_make"] = car.make.name
-                review["car_model"] = car.name
-                review["car_year"]= int(car.year.strftime("%Y"))
-            json_payload = {"review": review}
+                payload["purchase_date"] = datetime.strptime(form.get("purchasedate"), "%m/%d/%Y").isoformat()
+                payload["car_make"] = car.make.name
+                payload["car_model"] = car.name
+                payload["car_year"]= int(car.year.strftime("%Y"))
+            new_payload = {}
+            new_payload["review"] = payload
             url = "https://4fbfebf7.us-south.apigw.appdomain.cloud/api/review"
-            post_request(url=url, json_payload=json_payload, dealer_id=dealer_id)
+            post_request(url=url, payload=new_payload)
             return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
         else:
-            return redirect("/djangoapp/login")
+            return redirect("djangoapp:login")
