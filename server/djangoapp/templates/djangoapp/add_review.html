@@ -60,7 +60,7 @@
                     <label for="car">Select your car:</label>
                     <select name="car" id="car" class="form-select">
                         {% for car in cars %}
-                            <option selected value={{car.id}}>{{ car.make }} {{ car.year|date:"Y" }} {{car.name }}</option>
+                            <option selected value={{car.id}}>{{ car.make }} {{car.name }} {{ car.year|date:"Y" }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -71,5 +71,10 @@
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </main>
+        <script type="text/javascript">
+            $('.date-own').datepicker({
+                format: 'mm/dd/yyyy'
+            });
+        </script>
     </body>
 </html>

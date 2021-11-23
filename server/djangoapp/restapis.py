@@ -132,11 +132,8 @@ def analyze_review_sentiments(text):
 
     response = nlu.analyze(
         text=text,
-        features=Features(sentiment=SentimentOptions(document=True)),
+        features=Features(sentiment=SentimentOptions(targets=[text])),
         language="en"
         ).get_result()
-
-    print(json.dumps(response, indent=2))
-    sentiment = response["sentiment"]["document"]["label"]
-    print(f"sentiment: {sentiment}")
-    return sentiment
+    label = response["sentiment"]["document"]["label"]
+    return label
