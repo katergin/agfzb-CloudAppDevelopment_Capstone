@@ -12,8 +12,8 @@
         <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
     </head>
     <body>
-        <!--Add a nav bar here -->
-        <nav class="navbar navbar-expand-xl navbar-light bg-light">
+        <!-- Add a nav bar here -->
+        <nav class="navbar navbar-expand-xl navbar-light bg-light mb-4">
             <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Best Cars</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -45,7 +45,16 @@
                 </ul>
             </div>
         </nav>
-        <h1>Welcome to Best Cars dealership, home to the best cars in North America. We sell domestic and imported cars at reasonable prices.</h1>
+        <!-- Main page content -->
+        <main class="container">
+            <div class="jumbotron">
+                <h1><i class="fas fa-car"></i>Welcome to Best Cars Dealership</h1>
+                <p class="lead">Your home to the best cars in North America. We sell domestic and imported cars at reasonable prices.</p>
+                <hr class="my-4">
+                <p>If you don't know where to start, go to the home page and select the dealership closest to you.</p>
+                <a class="btn btn-secondary btn-sm" href="{% url 'djangoapp:index' %}" role="button">Check our dealerships</a>
+            </div>
+        </main>
     </body>
 
 </html>

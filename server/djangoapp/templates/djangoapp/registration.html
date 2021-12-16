@@ -6,7 +6,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     </head>
     <body>
-        <nav class="navbar navbar-expand-xl navbar-light bg-light">
+        <nav class="navbar navbar-expand-xl navbar-light bg-light mb-4">
             <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Best Cars</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -38,29 +38,37 @@
                 </ul>
             </div>
         </nav>
-    <!--Add a registration form here -->
-        <form action="{% url 'djangoapp:register' %}" method="post">
-            <div class="container">
-                {% csrf_token %}
+    <!-- Registration form -->
+        <main class="container">
+            <div class="jumbotron">
                 <h1>Sign Up</h1>
-                <hr>
-                <div class="form-group">
-                    <label for="username"><b>User Name</b></label>
-                    <input type="text" class="form-control" placeholder="Enter your username." name="username" required>
-                    <label for="firstname"><b>First Name</b></label>
-                    <input type="text" class="form-control" placeholder="What's your first name?" name="firstname" required>
-                    <label for="lastname"><b>Last Name</b></label>
-                    <input type="text" class="form-control" placeholder="What's your last name?" name="lastname" required>
-                    <label for="password"><b>Password</b></label>
-                    <input type="password" class="form-control" placeholder="Enter your password." name="password" required>
-                    {% if message %}
-                    <div class="alert alert-warning">
+                <hr class="my-4">
+                <form action="{% url 'djangoapp:register' %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label class="" for="username"><b>User Name</b></label>
+                        <input type="text" class="form-control" placeholder="Enter your username." name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="firstname"><b>First Name</b></label>
+                        <input type="text" class="form-control" placeholder="What's your first name?" name="firstname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastname"><b>Last Name</b></label>
+                        <input type="text" class="form-control" placeholder="What's your last name?" name="lastname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password"><b>Password</b></label>
+                        <input type="password" class="form-control" placeholder="Enter your password." name="password" required>
+                    </div>
+                        {% if message %}
+                    <div class="alert alert-warning w-100" role="alert">
                         {{ message }}
                     </div>
-                    {% endif %}
+                        {% endif %}
                     <button class="btn btn-primary" type="submit">Sign up</button>
-                </div>
+                </form>
             </div>
-        </form>
+        </main>
     </body>
 </html>

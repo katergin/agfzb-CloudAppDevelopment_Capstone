@@ -13,7 +13,7 @@
     </head>
     <body>
         <!--Add a nav bar here -->
-        <nav class="navbar navbar-expand-xl navbar-light bg-light">
+        <nav class="navbar navbar-expand-xl navbar-light bg-light mb-4">
             <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Best Cars</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -45,8 +45,29 @@
                 </ul>
             </div>
         </nav>
-        <span>+1-234-567-890</span>
-        <span>No. 123, Papaya Rd., Banana Dist., 45678 Pineapple City, Mangoland</span>
+        <!-- Main page content -->
+        <main class="container">
+            <div class="jumbotron">
+                <h1>Contact</h1>
+                <p class="lead">Have questions about our cars or services? Found an issue on the website? Reach out to us!</p>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Phone</th>
+                            <td>+1-234-567-890</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Email</th>
+                            <td>contact@bestcars.co.ml</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Address</th>
+                            <td>No. 123, Papaya Rd., Banana Dist., 45678 Pineapple City, Mangoland</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
     </body>
 
 </html>
